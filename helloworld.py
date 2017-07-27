@@ -1,6 +1,6 @@
 import logging
 import os
-#from time import gmtime, strftime
+from time import gmtime, strftime
 from googlefinance import getQuotes
 from flask import Flask
 import json
@@ -17,12 +17,16 @@ def launch():
     speech_text = 'Hello'
     return question(speech_text).reprompt(speech_text).simple_card('HelloWorld', speech_text)
 
-
 @ask.intent('HelloWorldIntent')
+def hello_word():
+	speech_text = "Hello world"
+	return statement(speech_text).simple_card('HelloWorld',speech_text)
+@ask.intent('StockIntent')
 def stocks():
      speech_text = json.dumps(getQuotes('AAPL'), indent=2)
      return statement(speech_text).simple_card('HelloWorld', speech_text)
 
+@ask.intent('TimeIntent')
 def time():
 	speech_text = strftime("%Y - %m - %d %H:%M:%S",gmtime())
 	return statement(speech_text).simple_card('HelloWorld',speech_text)
