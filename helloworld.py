@@ -19,11 +19,13 @@ def launch():
 
 
 @ask.intent('HelloWorldIntent')
-def hello_world():
+def stocks():
      speech_text = json.dumps(getQuotes('AAPL'), indent=2)
-     #speech_text = strftime("%Y - %m - %d %H:%M:%S",gmtime())
      return statement(speech_text).simple_card('HelloWorld', speech_text)
 
+def time():
+	speech_text = strftime("%Y - %m - %d %H:%M:%S",gmtime())
+	return statement(speech_text).simple_card('HelloWorld',speech_text)
 
 @ask.intent('AMAZON.HelpIntent')
 def help():
