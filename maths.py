@@ -8,9 +8,9 @@ variable = None
 app = Flask(__name__)
 ask = Ask(app, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
-from Classes import calculus
-from Classes import functions
+from Classes import calculus,functions,ApiConnect
 cal = calculus()
+connect = ApiConnect()
 func = functions()
 
 @ask.intent('IndefiniteIntIntegralIntent',convert={'a':int, 'b':int, 'c':int, 'd':int, 'e':int})
@@ -28,7 +28,7 @@ def differentiate(a,b,c,d,e):
 @ask.intent('AreundercurveIntent',convert={'a':int, 'b':int, 'c':int, 'd':int, 'e':int, 'start':int, 'finish':int})
 def areacurve(a,b,c,d,e):
     myfunction = func.createfunctions(a,b,c,d,e)
-    print (myfunction)  
+    print (myfunction)
 
 
 @ask.intent('SubtractionIntent', convert = {'a':int, 'b':int})
@@ -47,7 +47,12 @@ def division(a,b):
 def addition(a,b):
      c = a+b
      return question("{} divided by {} equals {}".format(a,b,c))
-
+@ask.intent('TweetIntent')
+def calltweet(name):
+    newname = name.lower().replace(" ","")
+    print(newname)
+    tweet = connect.twitterconnect(newname)
+    return question("The most recent tweet from {} is : {}".format(name,tweet))
 @ask.intent('YesIntent')
 def yesintent():
     global variable

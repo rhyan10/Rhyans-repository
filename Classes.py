@@ -1,5 +1,8 @@
 import scipy as sc
 import sympy as sp
+import tweepy
+import urllib2
+import json
 x = sp.Symbol('x')
 class functions:
     def createfunctions(self,a,b,c,d,e):
@@ -20,18 +23,6 @@ class functions:
                     function = function + d * x
                 else:
                     function = function + e
-        #if (b == None and c == None and d == None and e == None):
-            #return a
-        #elif(c == None and d == None and e == None):
-            #return a * x + b
-        #elif(b == None and d ==None and e == None):
-            #return a* x**2 +
-        #elif(d == None and e == None):
-            #return a * x**2 + b * x + c
-        #elif(e == None):
-            #return a * x**3 + b * x**2 + c * x + d
-        #else:
-            #return a * x**4 + b * x**3 + c * x**2 + d * x + e
 class calculus():
     def Integralindef(self,a,b,c,d,e):
         if (b is None and c is None and d is None and e is None):
@@ -58,9 +49,15 @@ class calculus():
     def areacurve(self,f,start,finish):
         sc.inte
 class ApiConnect():
-    def twitterconnect():
+    def twitterconnect(self,name):
         Access_token = "892739265205063681-Og2W5jBCIZVKITrWILQhGc5ewiwHNFP"
         Access_secret = "OdeTww1bslkbYjYaloeoZZQgpI1EVl6HoWpSkcxrYsNLx"
         consumer_key = "61WsI5K9XqwxbD0qbMI585IzL"
         consumer_secret = "FfxurEbL9jZGfVBhopuSTqpGVWiC7HAxWaxoIXmxo68aeKPR0Y"
-        
+        myauth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+        myauth.set_access_token(Access_token,Access_secret)
+        api = tweepy.API(myauth)
+        #for status in tweepy.Cursor(api.user_timeline(), screen_name = name):
+        #    print(status.text)
+        mytweet = api.user_timeline(id = name, count = 1)[0]
+        return mytweet.text
