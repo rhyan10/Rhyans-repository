@@ -13,19 +13,16 @@ for row in soup.findAll('h3'):
         symbols.append(symbol)
     else:
         pass
-
 stockdb = db.cursor()
+sqlcode = """ CREATE TABLE StockDataa (StockId VARCHAR(10),daate VARCHAR(9),Open FLOAT,High FLOAT,Low FLOAT,Close FLOAT,Volume BIGINT); """
+stockdb.execute(sqlcode)
 for name in symbols:
     csvlink = "http://www.google.co.uk/finance/historical?q=NASDAQ%3A"+name+"&start=0&num=31&output=csv"
-    sqlcode = """ CREATE TABLE """ + name """ (
-    Date VARCHAR(9)
-    Open FLOAT
-    High FLOAT
-    Low FLOAT
-    Close FLOAT
-    Volume BIGINT); """
-    stockdb.execute('CREATE TABLE ' + name)
-    #print csvlink
+    mycsvfile = pd.read_csv(csvlink)
+    #print(mycsvfile)
+    #for row in mycsvfile:
+	 #      stockdb.execute("INSERT INTO cycling(StockId,Date,Open,High,Low,Close,Volume) VALUES(%s, %s, %s, %s, %s, %s, %s)", row)
+
 
 #names = soup.find_all('h3')
-print(pd.read_csv('http://www.google.co.uk/finance/historical?q=NASDAQ%3AGOOGL&start=30&num=30&output=csv'))
+#print(pd.read_csv('http://www.google.co.uk/finance/historical?q=NASDAQ%3AGOOGL&start=30&num=30&output=csv'))
