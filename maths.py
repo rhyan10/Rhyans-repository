@@ -8,19 +8,34 @@ variable = None
 app = Flask(__name__)
 ask = Ask(app, "/")
 logging.getLogger('flask_ask').setLevel(logging.DEBUG)
+from query import Queries
 from Classes import calculus,functions,ApiConnect
+from stockssqldatabase import database
 cal = calculus()
 connect = ApiConnect()
 func = functions()
+Quack = Queries()
+data = database()
 
 @ask.intent('IndefiniteIntIntegralIntent',convert={'a':int, 'b':int, 'c':int, 'd':int, 'e':int})
 def integrate(a,b,c,d,e):
     speech_text = cal.Integralindef(a,b,c,d,e)
     return question(speech_text)
-
-@ask.intent("Maximum_between_two_dates",convert = {'a':int,'b':int})
-def findmethod(a,b,companyname,function):
-        return question(companyname)
+@ask.intent("DataOperationIntent")
+def get_ticker(start_date, end_date, companyname, function):
+    ticker = Quack.getdict(companyname)
+    if function == 'average':
+        calculated_data = Quack.avg_shares(ticker, data.changingyear(start_date), data.changingyear(end_date))
+        return question("The " + str(function) + " shares price between " + data.changingyear(start_date) + " and " + data.changingyear(end_date) + " is " + str(calculated_data))
+    elif function == 'minimum':
+        calculated_data = Quack.min_shares(ticker, data.changingyear(start_date), data.changingyear(end_date))
+        return question("The " + str(function) + " shares price between " + data.changingyear(start_date) + " and " + data.changingyear(end_date) + " is " + str(calculated_data))
+    elif function == 'maximum':
+    calculated_data = Quack.max_shares(ticker, data.changingyear(start_date), data.changingyear(end_date))
+    return question("The " + str(function) + " shares price between " + data.changingyear(start_date) + " and " + data.changingyear(end_date) + " is " + str(calculated_data))
+    else:
+        pass
+        return question("Sorry something went wrong ask me again")
 @ask.intent('firstderivative', convert={'a':int, 'b':int, 'c':int, 'd':int, 'e':int})
 def differentiate(a,b,c,d,e):
     speech_text = cal.differential(a,b,c,d,e)

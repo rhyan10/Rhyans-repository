@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as bs
-import urllib2,lxml,urlparse,sys,datetime,numpy
+import urllib2,lxml,urlparse,sys,datetime
 import pymysql as sql
+import numpy as np
 import pandas as pd
 import json
 import requests as rq
@@ -54,6 +55,7 @@ class database():
                 pass
             p = p + 1
         mydict = dict(zip(namelist,tickerlist))
+        print(mydict)
         np.save('namesandtickersdictionary.npy', mydict)
     def changingdateformat(self,date):
         mydate = None
@@ -89,8 +91,13 @@ class database():
         stockdb = db.cursor()
         sqlcode = """ CREATE TABLE StockAffluentData (ID int NOT NULL AUTO_INCREMENT PRIMARY KEY, StockName VARCHAR(10), Daate DATE,Open FLOAT,High FLOAT,Low FLOAT,Close FLOAT,Volume BIGINT); """
         stockdb.execute(sqlcode)
-data = database()
-data.input_to_table()
+    def changingyear(self,date):
+        date = str(date)
+        parts = date.split('-')
+        newparts = ['2017',parts[1],parts[2]]
+        return "-".join(newparts)
+
+
 
 #print (pd.read_csv("https://s3.amazonaws.com/quandl-static-content/Ticker+CSV%27s/secwiki_tickers.csv"))
 #names = soup.find_all('h3')
