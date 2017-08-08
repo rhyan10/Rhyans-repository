@@ -18,6 +18,9 @@ def integrate(a,b,c,d,e):
     speech_text = cal.Integralindef(a,b,c,d,e)
     return question(speech_text)
 
+@ask.intent("Maximum_between_two_dates",convert = {'a':int,'b':int})
+def findmethod(a,b,companyname,function):
+        return question(companyname)
 @ask.intent('firstderivative', convert={'a':int, 'b':int, 'c':int, 'd':int, 'e':int})
 def differentiate(a,b,c,d,e):
     speech_text = cal.differential(a,b,c,d,e)
@@ -50,8 +53,7 @@ def addition(a,b):
 @ask.intent('TweetIntent')
 def calltweet(name):
     newname = name.lower().replace(" ","")
-    print(newname)
-    tweet = connect.twitterconnect(newname)
+    tweet = connect.twitterconnect(connect.twitterdictionary(newname))
     return question("The most recent tweet from {} is : {}".format(name,tweet))
 @ask.intent('YesIntent')
 def yesintent():
@@ -96,6 +98,7 @@ def nointent():
 @ask.session_ended
 def session_ended():
 	return "{}", 200
+
 
 
 if __name__ == '__main__':
