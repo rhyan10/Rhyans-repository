@@ -55,7 +55,7 @@ class Queries():
         i = 0
         for k in dic.items():
             name = k[0]
-            numberlist.append(self.getdict(name)) #Add
+            namelist.append(self.getdict(name)) #Add
             sql = "SELECT AVG((0.5)*(Open+Close)) FROM stockaffluentdata WHERE stockname = %s group by stockname;"
             stockdb.execute(sql,(namelist[i]))
             result = stockdb.fetchall()
@@ -64,12 +64,9 @@ class Queries():
             except IndexError:
                 pass
             i = i+1
-        for i in
-
-            sql = "SELECT AVG((0.5)*(Open+Close)) FROM stockaffluentdata WHERE stockname = %s group by stockname;"
-            stockdb.execute(sql,(numberlist[i]))
-            datapoints = stockdb.fetchall()
-#x=np.load('namesandtickersdictionary.npy')
+            print numberlist
+        return numberlist
+            #x=np.load('namesandtickersdictionary.npy')
 #dici = dict(enumerate(x.flatten()))
 #dic = dici[0]
 #for i in dic:
