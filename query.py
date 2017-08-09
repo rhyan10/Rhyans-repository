@@ -44,7 +44,7 @@ class Queries():
         result = stockdb.fetchall()
         db.commit()
         return result
-    def leastrisky(self):
+    def saveaveragedata(self):
         x=np.load('namesandtickersdictionary.npy') #
         dici = dict(enumerate(x.flatten()))
         dic = dici[0]
@@ -55,22 +55,35 @@ class Queries():
         i = 0
         for k in dic.items():
             name = k[0]
-            namelist.append(self.getdict(name)) #Add
+            namelist.append(self.getdict(name)) #A
             sql = "SELECT AVG((0.5)*(Open+Close)) FROM stockaffluentdata WHERE stockname = %s group by stockname;"
             stockdb.execute(sql,(namelist[i]))
             result = stockdb.fetchall()
             try:
                 numberlist.append(result[0])
+                print result[0]
             except IndexError:
                 pass
             i = i+1
-            print numberlist
-        return numberlist
-            #x=np.load('namesandtickersdictionary.npy')
-#dici = dict(enumerate(x.flatten()))
-#dic = dici[0]
-#for i in dic:
-#    print i
+        averagesdict = dict(zip(namelist,numberlist))
+        np.save("Averagedictionary.npy",averagesdict)
+    def leastrisky(self):
+        stockdb = db.cursor()
+        dicti = np.load("Averagedictionary.npy")
+        dic = dict(enumerate(dicti.flatten()))
+        realdict = dic[0]
+        for i in realdict:
+            sql = "SELECT (0.5)*(Open+close) FROM stockaffluentdata WHERE stockname = %s;"
+            stockdb.execute(sql,i)
+            result = stockdb.fetchall()
+            try:
+                type(str(result[0]))
+                for a in list(result):
+                    pass
+            except:
+                pass
+        #this = realdict['AGN']
+        #this[0]
 from query import Queries
 qr = Queries()
 print qr.leastrisky()
