@@ -42,7 +42,7 @@ class database():
         for name in symbols:
             print name
             try:
-                csvlink = "http://www.google.co.uk/finance/historical?q=NASDAQ%3A"+name+"&start=0&num=31&output=csv"
+                csvlink = "http://www.google.co.uk/finance/historical?q=NASDAQ%3A"+name+"&start=0&num=61&output=csv"
                 mycsvfile = pd.read_csv(csvlink)
                 for i, row in mycsvfile.iterrows():
                     newdateformat = data.changingdateformat(row[0])
@@ -55,7 +55,6 @@ class database():
                 pass
             p = p + 1
         mydict = dict(zip(namelist,tickerlist))
-        print(mydict)
         np.save('namesandtickersdictionary.npy', mydict)
     def changingdateformat(self,date):
         mydate = None
@@ -96,7 +95,6 @@ class database():
         parts = date.split('-')
         newparts = ['2017',parts[1],parts[2]]
         return "-".join(newparts)
-
 
 
 #print (pd.read_csv("https://s3.amazonaws.com/quandl-static-content/Ticker+CSV%27s/secwiki_tickers.csv"))
