@@ -1,0 +1,2 @@
+Main contains all the alexa intents and the other three files refer functions to be used by the intents.
+Most of the functions wont work since it is not connected to the MySQL database.
